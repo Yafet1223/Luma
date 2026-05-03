@@ -1,101 +1,251 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-
-import { Link } from 'expo-router';
-import NativeWindTest from '@/components/NativeWindTest';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <NativeWindTest />
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.card}>
+        <View style={styles.topGlow} />
+        <View style={styles.bottomGlow} />
+
+        <View style={styles.promptRow}>
+          <Text style={styles.promptText}>
+            I can search new contacts
+            <Text style={styles.cursor}>|</Text>
+          </Text>
+        </View>
+
+        <Text style={styles.title}>
+          What Can I Do for{'\n'}You Today?
+        </Text>
+
+        <View style={styles.orbWrap}>
+          <View style={[styles.orbRing, styles.orbRingOne]} />
+          <View style={[styles.orbRing, styles.orbRingTwo]} />
+          <View style={[styles.orbRing, styles.orbRingThree]} />
+          <View style={[styles.orbRing, styles.orbRingFour]} />
+          <View style={styles.orbCore} />
+        </View>
+
+        <Pressable style={styles.keyboardButton}>
+          <Feather name="keyboard" size={18} color="#4B7A70" />
+          <Text style={styles.keyboardText}>Use Keyboard</Text>
+        </Pressable>
+
+        <View style={styles.bottomNav}>
+          <Pressable onPress={() => router.push('/modal')}>
+            <View style={styles.badgeWrap}>
+              <MaterialCommunityIcons name="account-search-outline" size={30} color="#9AC1B8" />
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>2</Text>
+              </View>
+            </View>
+          </Pressable>
+
+          <Pressable onPress={() => router.push('/(tabs)/home')}>
+            <View style={styles.centerLogo}>
+              <View style={[styles.logoRing, styles.logoRingOne]} />
+              <View style={[styles.logoRing, styles.logoRingTwo]} />
+            </View>
+          </Pressable>
+
+          <Pressable onPress={() => router.push('/(tabs)/explore')}>
+            <Ionicons name="options-outline" size={30} color="#9AC1B8" />
+          </Pressable>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  screen: {
+    flex: 1,
+    backgroundColor: '#DDF8EB',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
+    paddingHorizontal: 14,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  card: {
+    flex: 1,
+    width: '100%',
+    maxWidth: 430,
+    marginVertical: 8,
+    borderRadius: 34,
+    backgroundColor: '#070B0A',
+    overflow: 'hidden',
+    paddingHorizontal: 24,
+    paddingTop: 28,
+    paddingBottom: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(105, 255, 197, 0.08)',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  topGlow: {
     position: 'absolute',
+    width: 280,
+    height: 210,
+    borderRadius: 999,
+    backgroundColor: 'rgba(34, 197, 94, 0.26)',
+    top: -80,
+    left: -70,
+    shadowColor: '#34d399',
+    shadowOpacity: 0.45,
+    shadowRadius: 70,
+    shadowOffset: { width: 0, height: 0 },
+  },
+  bottomGlow: {
+    position: 'absolute',
+    width: 340,
+    height: 220,
+    borderRadius: 999,
+    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+    bottom: 140,
+    right: -120,
+  },
+  promptRow: {
+    marginTop: 10,
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  promptText: {
+    color: '#B5FAD8',
+    fontSize: 33,
+    fontWeight: '500',
+    letterSpacing: 0.2,
+  },
+  cursor: {
+    color: '#8BEECA',
+  },
+  title: {
+    color: '#B9FFDF',
+    textAlign: 'center',
+    fontSize: 54,
+    fontWeight: '800',
+    lineHeight: 62,
+    letterSpacing: -0.6,
+    marginBottom: 48,
+  },
+  orbWrap: {
+    height: 360,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  orbRing: {
+    position: 'absolute',
+    borderColor: 'rgba(104, 255, 211, 0.84)',
+    shadowColor: '#35F6B5',
+    shadowOpacity: 0.7,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 0 },
+  },
+  orbRingOne: {
+    width: 210,
+    height: 84,
+    borderRadius: 100,
+    borderWidth: 5,
+    transform: [{ rotate: '-18deg' }],
+  },
+  orbRingTwo: {
+    width: 210,
+    height: 84,
+    borderRadius: 100,
+    borderWidth: 5,
+    transform: [{ rotate: '28deg' }],
+  },
+  orbRingThree: {
+    width: 190,
+    height: 74,
+    borderRadius: 100,
+    borderWidth: 4,
+    transform: [{ rotate: '68deg' }],
+  },
+  orbRingFour: {
+    width: 178,
+    height: 68,
+    borderRadius: 100,
+    borderWidth: 4,
+    transform: [{ rotate: '-52deg' }],
+    opacity: 0.8,
+  },
+  orbCore: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    backgroundColor: 'rgba(8, 34, 28, 0.6)',
+    borderWidth: 1,
+    borderColor: 'rgba(120, 255, 212, 0.2)',
+  },
+  keyboardButton: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: -10,
+    marginBottom: 30,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(120, 200, 176, 0.2)',
+    backgroundColor: 'rgba(8, 20, 18, 0.45)',
+  },
+  keyboardText: {
+    color: '#4E7F74',
+    fontSize: 34,
+    fontWeight: '500',
+  },
+  bottomNav: {
+    marginTop: 'auto',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+  },
+  badgeWrap: {
+    position: 'relative',
+  },
+  badge: {
+    position: 'absolute',
+    right: -5,
+    top: -4,
+    backgroundColor: '#3CF8A4',
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#072A1C',
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  centerLogo: {
+    width: 74,
+    height: 74,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoRing: {
+    position: 'absolute',
+    borderWidth: 3,
+    borderColor: 'rgba(64, 255, 189, 0.9)',
+    borderRadius: 99,
+  },
+  logoRingOne: {
+    width: 64,
+    height: 30,
+    transform: [{ rotate: '-28deg' }],
+  },
+  logoRingTwo: {
+    width: 64,
+    height: 30,
+    transform: [{ rotate: '28deg' }],
   },
 });
