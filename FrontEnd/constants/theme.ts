@@ -27,6 +27,32 @@ export const Colors = {
   },
 };
 
+/** Luma agent UI — used by home / tabs for a consistent product look */
+export const AgentPalette = {
+  light: {
+    canvas: '#F4F4F5',
+    surface: '#FFFFFF',
+    surfaceElevated: '#FAFAFA',
+    text: '#18181B',
+    textMuted: '#71717A',
+    accent: '#4F46E5',
+    accentSoft: 'rgba(79, 70, 229, 0.12)',
+    border: '#E4E4E7',
+    tabBar: '#FFFFFF',
+  },
+  dark: {
+    canvas: '#09090B',
+    surface: '#121215',
+    surfaceElevated: '#1C1C22',
+    text: '#FAFAFA',
+    textMuted: '#A1A1AA',
+    accent: '#818CF8',
+    accentSoft: 'rgba(129, 140, 248, 0.14)',
+    border: '#27272A',
+    tabBar: '#0C0C0F',
+  },
+} as const;
+
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */

@@ -1,251 +1,197 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+
+import { AgentPalette } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+
+const SUGGESTIONS = [
+  'Summarize my week',
+  'Draft a reply',
+  'Plan tomorrow',
+  'Explain this simply',
+];
 
 export default function HomeScreen() {
+  const scheme = useColorScheme() ?? 'light';
+  const c = AgentPalette[scheme === 'dark' ? 'dark' : 'light'];
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <View style={styles.card}>
-        <View style={styles.topGlow} />
-        <View style={styles.bottomGlow} />
+    <SafeAreaView style={[styles.safe, { backgroundColor: c.canvas }]}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
+        <View style={styles.header}>
+          <View>
+            <Text style={[styles.wordmark, { color: c.textMuted }]}>LUMA</Text>
+            <Text style={[styles.headline, { color: c.text }]}>Your agent</Text>
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Open quick settings"
+            onPress={() => router.push('/modal')}
+            style={[styles.iconBtn, { backgroundColor: c.surfaceElevated, borderColor: c.border }]}>
+            <Ionicons name="settings-outline" size={22} color={c.textMuted} />
+          </Pressable>
+        </View>
 
-        <View style={styles.promptRow}>
-          <Text style={styles.promptText}>
-            I can search new contacts
-            <Text style={styles.cursor}>|</Text>
+        <View style={[styles.heroCard, { backgroundColor: c.surface, borderColor: c.border }]}>
+          <View style={[styles.accentBar, { backgroundColor: c.accentSoft }]} />
+          <Text style={[styles.greeting, { color: c.textMuted }]}>Personalized for you</Text>
+          <Text style={[styles.heroTitle, { color: c.text }]}>
+            Ask anything.{'\n'}Clear answers, your context.
+          </Text>
+          <Text style={[styles.heroBody, { color: c.textMuted }]}>
+            Luma remembers how you work—tone, goals, and routines—so every reply feels like yours, not generic AI.
+          </Text>
+
+          <Pressable
+            style={[styles.primaryCta, { backgroundColor: c.accent }]}
+            onPress={() => router.push('/modal')}>
+            <Ionicons name="chatbubble-ellipses-outline" size={20} color="#FFFFFF" />
+            <Text style={styles.primaryCtaText}>Start a conversation</Text>
+          </Pressable>
+        </View>
+
+        <Text style={[styles.sectionLabel, { color: c.textMuted }]}>Try asking</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
+          {SUGGESTIONS.map((label) => (
+            <Pressable
+              key={label}
+              style={[styles.chip, { backgroundColor: c.surface, borderColor: c.border }]}
+              onPress={() => router.push('/modal')}>
+              <Text style={[styles.chipText, { color: c.text }]}>{label}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+        <View style={[styles.footerNote, { borderTopColor: c.border }]}>
+          <Ionicons name="sparkles-outline" size={18} color={c.accent} />
+          <Text style={[styles.footerText, { color: c.textMuted }]}>
+            Preferences and memory stay on your terms—adjust anytime in settings.
           </Text>
         </View>
-
-        <Text style={styles.title}>
-          What Can I Do for{'\n'}You Today?
-        </Text>
-
-        <View style={styles.orbWrap}>
-          <View style={[styles.orbRing, styles.orbRingOne]} />
-          <View style={[styles.orbRing, styles.orbRingTwo]} />
-          <View style={[styles.orbRing, styles.orbRingThree]} />
-          <View style={[styles.orbRing, styles.orbRingFour]} />
-          <View style={styles.orbCore} />
-        </View>
-
-        <Pressable style={styles.keyboardButton}>
-          <Feather name="keyboard" size={18} color="#4B7A70" />
-          <Text style={styles.keyboardText}>Use Keyboard</Text>
-        </Pressable>
-
-        <View style={styles.bottomNav}>
-          <Pressable onPress={() => router.push('/modal')}>
-            <View style={styles.badgeWrap}>
-              <MaterialCommunityIcons name="account-search-outline" size={30} color="#9AC1B8" />
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>2</Text>
-              </View>
-            </View>
-          </Pressable>
-
-          <Pressable onPress={() => router.push('/(tabs)/home')}>
-            <View style={styles.centerLogo}>
-              <View style={[styles.logoRing, styles.logoRingOne]} />
-              <View style={[styles.logoRing, styles.logoRingTwo]} />
-            </View>
-          </Pressable>
-
-          <Pressable onPress={() => router.push('/(tabs)/explore')}>
-            <Ionicons name="options-outline" size={30} color="#9AC1B8" />
-          </Pressable>
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  safe: {
     flex: 1,
-    backgroundColor: '#DDF8EB',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 14,
   },
-  card: {
-    flex: 1,
-    width: '100%',
-    maxWidth: 430,
-    marginVertical: 8,
-    borderRadius: 34,
-    backgroundColor: '#070B0A',
-    overflow: 'hidden',
-    paddingHorizontal: 24,
-    paddingTop: 28,
-    paddingBottom: 24,
-    borderWidth: 1,
-    borderColor: 'rgba(105, 255, 197, 0.08)',
+  scroll: {
+    paddingHorizontal: 20,
+    paddingBottom: 28,
   },
-  topGlow: {
-    position: 'absolute',
-    width: 280,
-    height: 210,
-    borderRadius: 999,
-    backgroundColor: 'rgba(34, 197, 94, 0.26)',
-    top: -80,
-    left: -70,
-    shadowColor: '#34d399',
-    shadowOpacity: 0.45,
-    shadowRadius: 70,
-    shadowOffset: { width: 0, height: 0 },
-  },
-  bottomGlow: {
-    position: 'absolute',
-    width: 340,
-    height: 220,
-    borderRadius: 999,
-    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-    bottom: 140,
-    right: -120,
-  },
-  promptRow: {
-    marginTop: 10,
-    marginBottom: 20,
-    alignSelf: 'center',
-  },
-  promptText: {
-    color: '#B5FAD8',
-    fontSize: 33,
-    fontWeight: '500',
-    letterSpacing: 0.2,
-  },
-  cursor: {
-    color: '#8BEECA',
-  },
-  title: {
-    color: '#B9FFDF',
-    textAlign: 'center',
-    fontSize: 54,
-    fontWeight: '800',
-    lineHeight: 62,
-    letterSpacing: -0.6,
-    marginBottom: 48,
-  },
-  orbWrap: {
-    height: 360,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  orbRing: {
-    position: 'absolute',
-    borderColor: 'rgba(104, 255, 211, 0.84)',
-    shadowColor: '#35F6B5',
-    shadowOpacity: 0.7,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 0 },
-  },
-  orbRingOne: {
-    width: 210,
-    height: 84,
-    borderRadius: 100,
-    borderWidth: 5,
-    transform: [{ rotate: '-18deg' }],
-  },
-  orbRingTwo: {
-    width: 210,
-    height: 84,
-    borderRadius: 100,
-    borderWidth: 5,
-    transform: [{ rotate: '28deg' }],
-  },
-  orbRingThree: {
-    width: 190,
-    height: 74,
-    borderRadius: 100,
-    borderWidth: 4,
-    transform: [{ rotate: '68deg' }],
-  },
-  orbRingFour: {
-    width: 178,
-    height: 68,
-    borderRadius: 100,
-    borderWidth: 4,
-    transform: [{ rotate: '-52deg' }],
-    opacity: 0.8,
-  },
-  orbCore: {
-    width: 84,
-    height: 84,
-    borderRadius: 42,
-    backgroundColor: 'rgba(8, 34, 28, 0.6)',
-    borderWidth: 1,
-    borderColor: 'rgba(120, 255, 212, 0.2)',
-  },
-  keyboardButton: {
+  header: {
     flexDirection: 'row',
-    alignSelf: 'center',
-    alignItems: 'center',
-    gap: 10,
-    marginTop: -10,
-    marginBottom: 30,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: 'rgba(120, 200, 176, 0.2)',
-    backgroundColor: 'rgba(8, 20, 18, 0.45)',
-  },
-  keyboardText: {
-    color: '#4E7F74',
-    fontSize: 34,
-    fontWeight: '500',
-  },
-  bottomNav: {
-    marginTop: 'auto',
-    flexDirection: 'row',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 14,
+    marginTop: 8,
+    marginBottom: 24,
   },
-  badgeWrap: {
-    position: 'relative',
-  },
-  badge: {
-    position: 'absolute',
-    right: -5,
-    top: -4,
-    backgroundColor: '#3CF8A4',
-    borderRadius: 10,
-    minWidth: 18,
-    height: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 4,
-  },
-  badgeText: {
-    color: '#072A1C',
+  wordmark: {
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: '700',
+    letterSpacing: 2,
+    marginBottom: 4,
   },
-  centerLogo: {
-    width: 74,
-    height: 74,
+  headline: {
+    fontSize: 28,
+    fontWeight: '700',
+    letterSpacing: -0.5,
+  },
+  iconBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
   },
-  logoRing: {
+  heroCard: {
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: 22,
+    marginBottom: 28,
+    overflow: 'hidden',
+  },
+  accentBar: {
     position: 'absolute',
-    borderWidth: 3,
-    borderColor: 'rgba(64, 255, 189, 0.9)',
-    borderRadius: 99,
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 3,
   },
-  logoRingOne: {
-    width: 64,
-    height: 30,
-    transform: [{ rotate: '-28deg' }],
+  greeting: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 10,
   },
-  logoRingTwo: {
-    width: 64,
-    height: 30,
-    transform: [{ rotate: '28deg' }],
+  heroTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    lineHeight: 32,
+    letterSpacing: -0.3,
+    marginBottom: 12,
+  },
+  heroBody: {
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  primaryCta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 14,
+  },
+  primaryCtaText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  sectionLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  chipsRow: {
+    gap: 10,
+    paddingBottom: 8,
+  },
+  chip: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginRight: 10,
+  },
+  chipText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  footerNote: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    marginTop: 28,
+    paddingTop: 20,
+    borderTopWidth: 1,
+  },
+  footerText: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 20,
   },
 });
