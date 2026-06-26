@@ -1,1 +1,37 @@
+# Dependencies
 node_modules/
+**/node_modules/
+
+# Python virtual environments
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environment files
+.env
+.env.*
+
+# Logs and runtime files
+*.log
+npm-debug.log*
+pip-log.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Expo / React Native
+.expo/
+.expo-shared/
+android/app/build/
+android/build/
+ios/build/
+
+# Build outputs
+build/
+dist/
+coverage/
